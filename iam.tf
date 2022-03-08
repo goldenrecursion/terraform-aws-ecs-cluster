@@ -46,10 +46,10 @@ resource "aws_iam_policy_attachment" "cluster_service_policy_attachment" {
 
 resource "aws_iam_role" "task_execution_role" {
   name               = "cluster-task-execution-role-${var.component}-${var.deployment_identifier}-${var.cluster_name}"
-  assume_role_policy = data.aws_iam_policy_document.task_execution_role.json
+  assume_role_policy = data.aws_iam_policy_document.task_execution_assume_role.json
 }
 
-data "aws_iam_policy_document" "task_execution_role" {
+data "aws_iam_policy_document" "task_execution_assume_role" {
   statement {
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
