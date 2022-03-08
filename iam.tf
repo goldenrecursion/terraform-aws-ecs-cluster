@@ -83,8 +83,6 @@ resource "aws_iam_role_policy" "task_execution_role" {
   role   = aws_iam_role.task_execution_role.id
 }
 
-
-
 resource "null_resource" "iam_wait" {
   depends_on = [
     aws_iam_role.cluster_instance_role,
