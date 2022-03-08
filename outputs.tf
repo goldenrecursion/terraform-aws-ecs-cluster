@@ -35,7 +35,7 @@ output "security_group_id" {
 
 output "capacity_provider_name" {
   description = "The name of the capacity provider."
-  value       = aws_ecs_capacity_provider.autoscaling_group.name
+  value       = aws_ecs_capacity_provider.autoscaling_group[0].name
 }
 
 output "instance_role_arn" {
