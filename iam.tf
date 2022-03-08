@@ -44,6 +44,47 @@ resource "aws_iam_policy_attachment" "cluster_service_policy_attachment" {
   policy_arn = aws_iam_policy.cluster_service_policy.arn
 }
 
+resource "aws_iam_role" "task_execution_role" {
+  name               = "cluster-task-execution-role-${var.component}-${var.deployment_identifier}-${var.cluster_name}"
+  assume_role_policy = data.aws_iam_policy_document.task_execution_role.json
+}
+
+data "aws_iam_policy_document" "task_execution_role" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "task_execution_role" {
+  statement {
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "task_execution_role" {
+  name   = "cluster-task-execution-policy-${var.component}-${var.deployment_identifier}-${var.cluster_name}"
+  policy = data.aws_iam_policy_document.task_execution_role.json
+  role   = aws_iam_role.task_execution_role.id
+}
+
+
+
 resource "null_resource" "iam_wait" {
   depends_on = [
     aws_iam_role.cluster_instance_role,
@@ -52,7 +93,9 @@ resource "null_resource" "iam_wait" {
     aws_iam_instance_profile.cluster,
     aws_iam_role.cluster_service_role,
     aws_iam_policy.cluster_service_policy,
-    aws_iam_policy_attachment.cluster_service_policy_attachment
+    aws_iam_policy_attachment.cluster_service_policy_attachment,
+    aws_iam_role.task_execution_role,
+    aws_iam_role_policy.task_execution_role,
   ]
 
   provisioner "local-exec" {

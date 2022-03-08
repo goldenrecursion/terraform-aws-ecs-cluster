@@ -58,6 +58,16 @@ output "instance_policy_id" {
   value       = aws_iam_policy.cluster_instance_policy.id
 }
 
+output "task_execution_role_arn" {
+  description = "The ARN of the container instance role."
+  value       = aws_iam_role.task_execution_role.arn
+}
+
+output "task_execution_role_id" {
+  description = "The ID of the container instance role."
+  value       = aws_iam_role.task_execution_role.unique_id
+}
+
 output "service_role_arn" {
   description = "The ARN of the ECS service role."
   value       = aws_iam_role.cluster_service_role.arn
