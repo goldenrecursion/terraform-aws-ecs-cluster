@@ -59,7 +59,7 @@ resource "aws_autoscaling_group" "cluster" {
   max_size         = var.cluster_maximum_size
   desired_capacity = var.cluster_desired_capacity
 
-  protect_from_scale_in = var.protect_cluster_instances_from_scale_in == "yes"
+  protect_from_scale_in = ((var.include_asg_capacity_provider == "yes" && var.asg_capacity_provider_manage_termination_protection == "yes") || var.protect_cluster_instances_from_scale_in == "yes")
 
   tag {
     key                 = "Name"
