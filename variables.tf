@@ -193,3 +193,8 @@ variable "asg_capacity_provider_target_capacity" {
   type        = number
   default     = 100
 }
+
+variable "cw_log_retention_in_days" {
+  description = "Cloudwatch Log retention in days"
+  default     = 3
+}
