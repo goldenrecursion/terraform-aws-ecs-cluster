@@ -9,8 +9,8 @@ resource "aws_ecs_capacity_provider" "autoscaling_group" {
     managed_termination_protection = var.asg_capacity_provider_manage_termination_protection == "yes" ? "ENABLED" : "DISABLED"
 
     managed_scaling {
-      status = var.asg_capacity_provider_manage_scaling == "yes" ? "ENABLED" : "DISABLED"
-      target_capacity = var.asg_capacity_provider_target_capacity
+      status                    = var.asg_capacity_provider_manage_scaling == "yes" ? "ENABLED" : "DISABLED"
+      target_capacity           = var.asg_capacity_provider_target_capacity
       minimum_scaling_step_size = var.asg_capacity_provider_minimum_scaling_step_size
       maximum_scaling_step_size = var.asg_capacity_provider_maximum_scaling_step_size
     }

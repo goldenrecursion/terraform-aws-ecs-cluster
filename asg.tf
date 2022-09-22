@@ -16,9 +16,9 @@ resource "aws_launch_configuration" "cluster" {
 
   iam_instance_profile = aws_iam_instance_profile.cluster.name
 
-  user_data = templatefile(coalesce(var.cluster_instance_user_data_template, file("${path.module}/user-data/cluster.tpl")), {
+  user_data = coalesce(var.cluster_instance_user_data_template, templatefile("${path.module}/user-data/cluster.tpl", {
     cluster_name = local.cluster_full_name
-  })
+  }))
 
   security_groups = concat([aws_security_group.cluster.id], var.security_groups)
 
